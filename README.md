@@ -1,3 +1,3 @@
 # matrix-1
 
-### Scott, Chris, Devin, and Zach
+### Scott, Chris, Devin, and Other
