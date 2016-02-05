@@ -39,13 +39,13 @@ public class Matrix {
     }
 
     /**
-     *
+     * @scottshuffler
      * @param A
      * @param m
      * @param n
      */
     public Matrix(double[][] A, int m, int n) {
-
+        //starting
     }
 
     /**
