@@ -1,5 +1,8 @@
 /**
  * Matrix class
+ * Team SASS
+ * Scott Shuffler, Zach Andrews, Chris Smith, Devin Sink
+ * 2.5.2016
  */
 public class Matrix {
 
