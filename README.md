@@ -1,6 +1,12 @@
 # Project: matrix-1
 
 ## Team SASS
+3 X 1 X 2 X 1 = 6 unique possibilities 
+
+or
+
+3! X 1! = 6
+
 Scott **S**huffler, Zach **A**ndrews, Chris **S**mith, and Devin **S**ink
 
 Scott **S**huffler, Zach **A**ndrews, Devin **S**ink, and Chris **S**mith
