@@ -1,6 +1,8 @@
 # Project: matrix-1
 
 ## Team SASS
+
+###Combinatorics 
 3 X 1 X 2 X 1 = 6 unique possibilities 
 
 or
