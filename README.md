@@ -2,6 +2,9 @@
 
 ## Team SASS
 
+###Pivotal Tracker
+https://www.pivotaltracker.com/n/projects/1519175
+
 ###Combinatorics 
 3 X 1 X 2 X 1 = 6 unique possibilities 
 
@@ -23,5 +26,3 @@ Devin **S**ink, Zach **A**ndrews, Scott **S**huffler, and Chris **S**mith
 
 Devin **S**ink, Zach **A**ndrews, Chris **S**mith, and Scott **S**huffler
 
-##Pivotal Tracker
-https://www.pivotaltracker.com/n/projects/1519175
