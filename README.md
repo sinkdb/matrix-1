@@ -5,7 +5,7 @@
 
 or
 
-3! X 1! = 6
+3! X 1! = 6 unique possibilities
 
 Scott **S**huffler, Zach **A**ndrews, Chris **S**mith, and Devin **S**ink
 
