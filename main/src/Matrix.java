@@ -6,6 +6,10 @@
  */
 public class Matrix {
 
+    private double[][] matrix;
+    private int M;
+    private int N;
+
     public static void main(String[] args) {
         System.out.println("Hello");
     }
@@ -42,13 +46,15 @@ public class Matrix {
     }
 
     /**
-     * @scottshuffler
-     * @param A
-     * @param m
-     * @param n
+     * Constructor that accepts three parameters
+     * @param A - Two dimensional array of doubles
+     * @param m - dimension m
+     * @param n - dimension n
      */
     public Matrix(double[][] A, int m, int n) {
-        //starting
+        setMatrix(A);
+        setM(m);
+        setN(n);
     }
 
     /**
@@ -476,5 +482,29 @@ public class Matrix {
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
         return null;
+    }
+
+    public double[][] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(double[][] matrix) {
+        this.matrix = matrix;
+    }
+
+    public int getM() {
+        return M;
+    }
+
+    public void setM(int m) {
+        M = m;
+    }
+
+    public int getN() {
+        return N;
+    }
+
+    public void setN(int n) {
+        N = n;
     }
 }
