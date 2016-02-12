@@ -16,9 +16,10 @@ public class Matrix {
      */
 
     /**
-     *
-     * @param m
-     * @param n
+     * @chrissmith
+     * Constructor that initializes an m*n matrix with all 0's.
+     * @param m number of rows
+     * @param n number of columns
      */
     public Matrix(int m, int n) {
     	matrix = new double[m][n];
@@ -130,8 +131,9 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that gets the number of rows in the matrix.
+     * @return the number of rows
      */
     public int getRowDimension() {
         return matrix.length;
@@ -168,10 +170,11 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param r
-     * @param c
-     * @return
+     * @chrissmith
+     * Function that gets a submatrix of the current matrix.
+     * @param r number of rows
+     * @param c number of columns
+     * @return returns a submatrix
      */
     public Matrix getMatrix(int[] r, int[] c) {
     	double[][] submatrix = new double[r.length][c.length];
@@ -186,15 +189,16 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param i0
-     * @param i1
-     * @param c
-     * @return
+     * @chrissmith
+     * Function that gets all columns from row i0 to row i1.
+     * @param i0 first row index desired
+     * @param i1 last row index desired
+     * @param c the columns desired
+     * @return a submatrix of the current matrix
      */
     public Matrix getMatrix(int i0, int i1, int[] c) {
         double[][] submatrix = new double[c.length][i1-i0];
-        for(int i = i0; i < i1; i++)
+        for(int i = i0; i <= i1; i++)
         {
         	for(int j = 0; j < c.length; j++)
         	{
