@@ -6,10 +6,7 @@
  */
 public class Matrix {
 
-    private double[][] matrix;
-    private int M;
-    private int N;
-
+	private double[][] matrix;
     public static void main(String[] args) {
         System.out.println("Hello");
     }
@@ -24,7 +21,14 @@ public class Matrix {
      * @param n
      */
     public Matrix(int m, int n) {
-
+    	matrix = new double[m][n];
+    	for(int i = 0; i < m; i++)
+    	{
+    		for(int j = 0; j < n; j++)
+    		{
+    			matrix[i][j] = 0;
+    		}
+    	}
     }
 
     /**
@@ -46,15 +50,13 @@ public class Matrix {
     }
 
     /**
-     * Constructor that accepts three parameters
-     * @param A - Two dimensional array of doubles
-     * @param m - dimension m
-     * @param n - dimension n
+     * @scottshuffler
+     * @param A
+     * @param m
+     * @param n
      */
     public Matrix(double[][] A, int m, int n) {
-        setMatrix(A);
-        setM(m);
-        setN(n);
+        //starting
     }
 
     /**
@@ -132,7 +134,7 @@ public class Matrix {
      * @return
      */
     public int getRowDimension() {
-        return 0;
+        return matrix.length;
     }
 
     /**
@@ -172,7 +174,15 @@ public class Matrix {
      * @return
      */
     public Matrix getMatrix(int[] r, int[] c) {
-        return null;
+    	double[][] submatrix = new double[r.length][c.length];
+        for(int i = 0; i < r.length; i++)
+        {
+        	for(int j = 0; j < c.length; j++)
+        	{
+        		submatrix[i][j] = matrix[r[i]][c[j]];
+        	}
+        }
+    	return new Matrix(submatrix);
     }
 
     /**
@@ -183,7 +193,15 @@ public class Matrix {
      * @return
      */
     public Matrix getMatrix(int i0, int i1, int[] c) {
-        return null;
+        double[][] submatrix = new double[c.length][i1-i0];
+        for(int i = i0; i < i1; i++)
+        {
+        	for(int j = 0; j < c.length; j++)
+        	{
+        		submatrix[i][j] = matrix[i0 + i][c[j]];
+        	}
+        }
+    	return new Matrix(submatrix);
     }
 
     /**
@@ -482,29 +500,5 @@ public class Matrix {
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
         return null;
-    }
-
-    public double[][] getMatrix() {
-        return matrix;
-    }
-
-    public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public int getM() {
-        return M;
-    }
-
-    public void setM(int m) {
-        M = m;
-    }
-
-    public int getN() {
-        return N;
-    }
-
-    public void setN(int n) {
-        N = n;
     }
 }
