@@ -50,13 +50,20 @@ public class Matrix {
     }
 
     /**
-     * @scottshuffler
-     * @param A
-     * @param m
-     * @param n
+     * scottshuffler
+     * Matrix constructor that takes in three variables and sets the matrix field based of the parameters
+     * @param A - Double array provided
+     * @param m - m distance they need copied
+     * @param n - n distance they need copied
      */
     public Matrix(double[][] A, int m, int n) {
-        //starting
+        matrix = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = A[i][j];
+            }
+        }
+
     }
 
     /**
