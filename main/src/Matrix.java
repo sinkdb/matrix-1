@@ -172,10 +172,10 @@ public class Matrix {
     /**
      * @chrissmith
      * Function that gets a submatrix of the current matrix.
-     * @param r number of rows
-     * @param c number of columns
-     * @return returns a submatrix
-     */
+     * @param r number of rows in array form
+     * @param c number of columns in array form
+     * @return returns a submatrix of the current matrix
+     */ 
     public Matrix getMatrix(int[] r, int[] c) {
     	double[][] submatrix = new double[r.length][c.length];
         for(int i = 0; i < r.length; i++)
@@ -197,7 +197,7 @@ public class Matrix {
      * @return a submatrix of the current matrix
      */
     public Matrix getMatrix(int i0, int i1, int[] c) {
-        double[][] submatrix = new double[c.length][i1-i0];
+        double[][] submatrix = new double[i1-i0][c.length];
         for(int i = i0; i <= i1; i++)
         {
         	for(int j = 0; j < c.length; j++)
@@ -220,13 +220,14 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param i
-     * @param j
-     * @param s
+     * @chrissmith
+     * Function that sets a single element in the matrix
+     * @param i row index
+     * @param j column index
+     * @param s new item in matrix
      */
     public void set(int i, int j, double s) {
-
+    	matrix[i][j] = s;
     }
 
     /**
@@ -238,7 +239,13 @@ public class Matrix {
      * @param X
      */
     public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
-
+    	for(int i = i0; i <= i1; i++)
+    	{
+    		for(int j = j0; j <= j1; j++)
+    		{
+    			matrix[i][j] = X.matrix[i][j];
+    		}
+    	}
     }
 
     /**
@@ -464,7 +471,15 @@ public class Matrix {
      * @param d
      */
     public void print(int w, int d) {
-
+    	for(int i = 0; i < getRowDimension(); i++)
+    	{
+    		System.out.print("[ ");
+    		for(int j = 0; j < getColumnDimension(); j++)
+    		{
+    			System.out.print(String.format("%w.df ", matrix[i][j]));
+    		}
+    		System.out.println("]");
+    	}
     }
 
     /**
