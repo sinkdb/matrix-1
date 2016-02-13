@@ -85,11 +85,13 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that returns a new Matrix object with a copy of
+     * the matrix field
+     * @return new Matrix object with a copy of the 2D array
      */
     public Matrix copy() {
-        return null;
+        return new Matrix(getArrayCopy());
     }
 
     /**
