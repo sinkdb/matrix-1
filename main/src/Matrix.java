@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Matrix class
  * Team SASS
@@ -231,12 +233,13 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param i0
-     * @param i1
-     * @param j0
-     * @param j1
-     * @param X
+     * @chrissmith
+     * Function that sets the matrix field to the one in X.
+     * @param i0 first row index
+     * @param i1 last row index
+     * @param j0 first column index
+     * @param j1 last column index
+     * @param X Matrix object used to set the field
      */
     public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
     	for(int i = i0; i <= i1; i++)
@@ -313,11 +316,20 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that negates each element.
+     * @return Matrix that is the reverse-signed version of the original
      */
     public Matrix uminus() {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = -matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -357,12 +369,22 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param B
-     * @return
+     * @chrissmith
+     * Function that multiplies the current matrix with the parameter B.
+     * This multiplication is element-by-element.
+     * @param B Matrix that is used to multiply the current matrix by
+     * @return new Matrix object with the resultant matrix
      */
     public Matrix arrayTimes(Matrix B) {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = matrix[i][j] * B.matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -393,12 +415,22 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param B
-     * @return
+     * @chrissmith
+     * Function that left divides the current matrix with the parameter B.
+     * This division is element-by-element.
+     * @param B Matrix that is used to divide the current matrix by
+     * @return new Matrix object with the resultant matrix
      */
     public Matrix arrayLeftDivide(Matrix B) {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = B.matrix[i][j] / matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -446,13 +478,24 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param m
-     * @param n
-     * @return
+     * @chrissmith
+     * Function that generates a Matrix full of uniformly
+     * generated doubles.
+     * @param m number of rows
+     * @param n number of columns
+     * @return Matrix object that contains uniformly distributed data
      */
     public static Matrix random(int m, int n) {
-        return null;
+    	double[][] rMatrix = new double[m][n];
+    	Random r = new Random();
+    	for(int i = 0; i < m; i++)
+    	{
+    		for(int j = 0; j < n; j++)
+    		{
+    			rMatrix[i][j] = r.nextDouble();
+    		}
+    	}
+    	return new Matrix(rMatrix);
     }
 
     /**
@@ -466,9 +509,12 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param w
-     * @param d
+     * @chrissmith
+     * Function that prints out each item in the form x.y,
+     * where w is the max number of digits in x and
+     * d is the max number of digits in y.
+     * @param w number of sig. digits before the decimal place
+     * @param d number of sig. digits after the decimal place
      */
     public void print(int w, int d) {
     	for(int i = 0; i < getRowDimension(); i++)
@@ -489,7 +535,15 @@ public class Matrix {
      * @param d
      */
     public void print(java.io.PrintWriter output, int w, int d) {
-
+    	for(int i = 0; i < getRowDimension(); i++)
+    	{
+    		output.print("[ ");
+    		for(int j = 0; j < getColumnDimension(); j++)
+    		{
+    			output.print(String.format("%w.df ", matrix[i][j]));
+    		}
+    		output.println("]");
+    	}
     }
 
     /**
