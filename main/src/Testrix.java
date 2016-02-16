@@ -1,5 +1,9 @@
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 import org.junit.Test;
 
 
@@ -286,12 +290,22 @@ public class Testrix {
 	
 	@Test
 	public void testPrint() {
-		fail("Not yet implemented");
+		 ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	     System.setOut(new PrintStream(outContent));
+	     initMatrix.print(2, 2);
+	     String output  = "[1.0, 2.0, 3.0]\n[4.0, 5.0, 6.0]\n[7.0, 8.0, 9.0]\n";
+
+	     assertEquals(outContent.toString(), output);
 	}
 	
 	@Test
 	public void testPrint2() {
-		fail("Not yet implemented");
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	     System.setOut(new PrintStream(outContent));
+	     initMatrix.print(new PrintWriter(outContent), 2, 2);
+	     String output  = "[1.0, 2.0, 3.0]\n[4.0, 5.0, 6.0]\n[7.0, 8.0, 9.0]\n";
+
+	     assertEquals(outContent.toString(), output);
 	}
 	
 	@Test
