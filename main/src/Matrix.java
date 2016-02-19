@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Matrix class
  * Team SASS
@@ -16,9 +18,10 @@ public class Matrix {
      */
 
     /**
-     *
-     * @param m
-     * @param n
+     * @chrissmith
+     * Constructor that initializes an m*n matrix with all 0's.
+     * @param m number of rows
+     * @param n number of columns
      */
     public Matrix(int m, int n) {
     	matrix = new double[m][n];
@@ -99,11 +102,13 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that returns a new Matrix object with a copy of
+     * the matrix field
+     * @return new Matrix object with a copy of the 2D array
      */
     public Matrix copy() {
-        return null;
+        return new Matrix(getArrayCopy());
     }
 
     /**
@@ -147,8 +152,9 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that gets the number of rows in the matrix.
+     * @return the number of rows
      */
     public int getRowDimension() {
         return matrix.length;
@@ -187,11 +193,12 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param r
-     * @param c
-     * @return
-     */
+     * @chrissmith
+     * Function that gets a submatrix of the current matrix.
+     * @param r number of rows in array form
+     * @param c number of columns in array form
+     * @return returns a submatrix of the current matrix
+     */ 
     public Matrix getMatrix(int[] r, int[] c) {
     	double[][] submatrix = new double[r.length][c.length];
         for(int i = 0; i < r.length; i++)
@@ -205,15 +212,16 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param i0
-     * @param i1
-     * @param c
-     * @return
+     * @chrissmith
+     * Function that gets all columns from row i0 to row i1.
+     * @param i0 first row index desired
+     * @param i1 last row index desired
+     * @param c the columns desired
+     * @return a submatrix of the current matrix
      */
     public Matrix getMatrix(int i0, int i1, int[] c) {
-        double[][] submatrix = new double[c.length][i1-i0];
-        for(int i = i0; i < i1; i++)
+        double[][] submatrix = new double[i1-i0][c.length];
+        for(int i = i0; i <= i1; i++)
         {
         	for(int j = 0; j < c.length; j++)
         	{
@@ -235,30 +243,40 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param i
-     * @param j
-     * @param s
+     * @chrissmith
+     * Function that sets a single element in the matrix
+     * @param i row index
+     * @param j column index
+     * @param s new item in matrix
      */
     public void set(int i, int j, double s) {
-
+    	matrix[i][j] = s;
     }
 
     /**
-     *
-     * @param i0
-     * @param i1
-     * @param j0
-     * @param j1
-     * @param X
+     * @chrissmith
+     * Function that sets the matrix field to the one in X.
+     * @param i0 first row index
+     * @param i1 last row index
+     * @param j0 first column index
+     * @param j1 last column index
+     * @param X Matrix object used to set the field
      */
     //do this
     public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
+<<<<<<< HEAD
     	for(int i = i0; i < i1; i++)
     	{
     		for(int j = j0; j < j1; j++)
     		{
     			matrix[i][j] = X[i][j];
+=======
+    	for(int i = i0; i <= i1; i++)
+    	{
+    		for(int j = j0; j <= j1; j++)
+    		{
+    			matrix[i][j] = X.matrix[i][j];
+>>>>>>> refs/remotes/CompassSoftware/master
     		}
     	}
     }
@@ -337,11 +355,20 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * @chrissmith
+     * Function that negates each element.
+     * @return Matrix that is the reverse-signed version of the original
      */
     public Matrix uminus() {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = -matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -398,12 +425,22 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param B
-     * @return
+     * @chrissmith
+     * Function that multiplies the current matrix with the parameter B.
+     * This multiplication is element-by-element.
+     * @param B Matrix that is used to multiply the current matrix by
+     * @return new Matrix object with the resultant matrix
      */
     public Matrix arrayTimes(Matrix B) {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = matrix[i][j] * B.matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -442,12 +479,22 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param B
-     * @return
+     * @chrissmith
+     * Function that left divides the current matrix with the parameter B.
+     * This division is element-by-element.
+     * @param B Matrix that is used to divide the current matrix by
+     * @return new Matrix object with the resultant matrix
      */
     public Matrix arrayLeftDivide(Matrix B) {
-        return null;
+    	double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+    	for(int i = 0; i < newMatrix.length; i++)
+    	{
+    		for(int j = 0; j < newMatrix[i].length; j++)
+    		{
+    			newMatrix[i][j] = B.matrix[i][j] / matrix[i][j];
+    		}
+    	}
+    	return new Matrix(newMatrix);
     }
 
     /**
@@ -532,13 +579,24 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param m
-     * @param n
-     * @return
+     * @chrissmith
+     * Function that generates a Matrix full of uniformly
+     * generated doubles.
+     * @param m number of rows
+     * @param n number of columns
+     * @return Matrix object that contains uniformly distributed data
      */
     public static Matrix random(int m, int n) {
-        return null;
+    	double[][] rMatrix = new double[m][n];
+    	Random r = new Random();
+    	for(int i = 0; i < m; i++)
+    	{
+    		for(int j = 0; j < n; j++)
+    		{
+    			rMatrix[i][j] = r.nextDouble();
+    		}
+    	}
+    	return new Matrix(rMatrix);
     }
 
     /**
@@ -569,12 +627,23 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param w
-     * @param d
+     * @chrissmith
+     * Function that prints out each item in the form x.y,
+     * where w is the max number of digits in x and
+     * d is the max number of digits in y.
+     * @param w number of sig. digits before the decimal place
+     * @param d number of sig. digits after the decimal place
      */
     public void print(int w, int d) {
-
+    	for(int i = 0; i < getRowDimension(); i++)
+    	{
+    		System.out.print("[ ");
+    		for(int j = 0; j < getColumnDimension(); j++)
+    		{
+    			System.out.print(String.format("%w.df ", matrix[i][j]));
+    		}
+    		System.out.println("]");
+    	}
     }
 
     /**
@@ -584,7 +653,15 @@ public class Matrix {
      * @param d
      */
     public void print(java.io.PrintWriter output, int w, int d) {
-
+    	for(int i = 0; i < getRowDimension(); i++)
+    	{
+    		output.print("[ ");
+    		for(int j = 0; j < getColumnDimension(); j++)
+    		{
+    			output.print(String.format("%w.df ", matrix[i][j]));
+    		}
+    		output.println("]");
+    	}
     }
 
     /**
