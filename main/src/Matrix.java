@@ -35,22 +35,39 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param m
-     * @param n
-     * @param s
-     */
-    public Matrix(int m, int n, double s) {
+    *
+    * @param m
+    * @param n
+    * @param s
+    */
+   public Matrix(int m, int n, double s) {
+   	matrix = new double[m][n];
+   	for(int i = 0; i < m; i++)
+   	{
+   		for(int j = 0; j < n; j++)
+   		{
+   			matrix[i][j] = s;
+   		}
+   	}
+   }
 
-    }
-
-    /**
-     *
-     * @param A
-     */
-    public Matrix(double[][] A) {
-
-    }
+   /**
+    *
+    * @param A
+    */
+   public Matrix(double[][] A) {
+   	int n = A.length;
+   	int m = A[0].length;
+   	matrix = new double[m][n];
+   	for(int i = 0; i < m; i++)
+   	{
+   		for(int j = 0; j < n; j++)
+   		{
+   			matrix[i][j] = A[i][j];
+   		}
+   	}
+   	
+   }
 
     /**
      * scottshuffler
@@ -154,8 +171,9 @@ public class Matrix {
      *
      * @return
      */
+    //do this
     public int getColumnDimension() {
-        return 0;
+        return matrix.length;
     }
 
     /**
@@ -164,8 +182,9 @@ public class Matrix {
      * @param j
      * @return
      */
+    //do this
     public double get(int i, int j) {
-        return 0.0;
+        return matrix[i][j];
     }
 
     /**
@@ -250,12 +269,21 @@ public class Matrix {
      * @param j1 last column index
      * @param X Matrix object used to set the field
      */
+    //do this
     public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
+<<<<<<< HEAD
+    	for(int i = i0; i < i1; i++)
+    	{
+    		for(int j = j0; j < j1; j++)
+    		{
+    			matrix[i][j] = X[i][j];
+=======
     	for(int i = i0; i <= i1; i++)
     	{
     		for(int j = j0; j <= j1; j++)
     		{
     			matrix[i][j] = X.matrix[i][j];
+>>>>>>> refs/remotes/CompassSoftware/master
     		}
     	}
     }
@@ -320,8 +348,17 @@ public class Matrix {
      *
      * @return
      */
+    //do this
     public double normF() {
-        return 0.0;
+    	double sum = 0.0;
+    	for(int i = 0; i < matrix.length; i++)
+    	{
+    		for(int j = 0; j < matrix[i].length; j++)
+    		{
+    			sum += (matrix[i][j] * matrix[i][j]);
+    		}
+    	}
+        return Math.sqrt(sum);
     }
 
     /**
@@ -346,8 +383,17 @@ public class Matrix {
      * @param B
      * @return
      */
+    //do this
     public Matrix plus(Matrix B) {
-        return null;
+    	Matrix newMatrix = new Matrix(B.length, B[0].length);
+        for (int i = 0; i < B.length; i++)
+        {
+        	for(int j = 0; j < B[i].length; j++)
+        	{
+        		newMatrix[i][j] = (matrix[i][j] + B[i][j]);
+        	}
+        }
+        return newMatrix;
     }
 
     /**
@@ -373,8 +419,16 @@ public class Matrix {
      * @param B
      * @return
      */
+    //do this
     public Matrix minusEquals(Matrix B) {
-        return null;
+        for(int i = 0; i < B.length; i++)
+        {
+        	for(int j = 0; j < B[i].length; j++)
+        	{
+        		matrix[i][j] -= B[i][j];
+        	}
+        }
+    	return matrix;
     }
 
     /**
@@ -401,8 +455,16 @@ public class Matrix {
      * @param B
      * @return
      */
+    //do this
     public Matrix arrayTimesEquals(Matrix B) {
-        return null;
+    	for (int i = 0; i < B.length; i ++)
+    	{
+    		for(int j = 0; j < B.[i].length; j++)
+    		{
+    			matrix[i][j] *= B[i][j];
+    		}
+    	}
+        return matrix;
     }
 
     /**
@@ -447,8 +509,16 @@ public class Matrix {
      * @param B
      * @return
      */
+    //do this
     public Matrix arrayLeftDivideEquals(Matrix B) {
-        return null;
+    	for (int i = 0; i < B.length; i++)
+    	{
+    		for(int j = 0; j < B.[i].length; j++)
+    		{
+    			matrix[i][j] \= B[i][j];
+    		}
+    	}
+        return matrix;
     }
 
     /**
@@ -474,16 +544,45 @@ public class Matrix {
      * @param B
      * @return
      */
+    //do this
     public Matrix times(Matrix B) {
-        return null;
+    	//columns of first match rows of second
+    	//matrix[0].length = B.length
+    	if(matrix[0].length == B.length)
+    	{
+    		Matrix newMatrix = new Matrix(matrix.length, B[0].length);
+    		for(int i = 0; i < matrix.length; i++)
+    		{
+    			for(int j = 0; j < B[i].length; j++)
+    			{
+    				for(int k = 0; k < B.length; k++)
+    				{
+    					newMatrix[i][k] += matrix[i][k] * B[k][j];
+    				}
+    			}
+    		}
+    	}
+    	return newMatrix;
     }
 
     /**
      *
      * @return
      */
+    //do this
     public double trace() {
-        return 0.0;
+    	double diagonal;
+    	for(int i = 0; i < matrix.length; i++)
+    	{
+    		for(int j = 0; j < matrix[i].length; j++)
+    		{
+    			if(i == j)
+    			{
+    				diagonal += matrix[i][j];
+    			}
+    		}
+    	}
+        return diagonal;
     }
 
     /**
@@ -513,8 +612,25 @@ public class Matrix {
      * @param n
      * @return
      */
+    //do this
     public static Matrix identity(int m, int n) {
-        return null;
+    	double[][] temp = new double[m][n];
+    	for(int i = 0; i < temp.length; i ++)
+    	{
+    		for(j = 0; j < temp[i].length; j++)
+    		{
+    			if(i == j)
+    			{
+    				temp[i][j] = 1;
+    			}
+    			else
+    			{
+    				temp[i][j] = 0;
+    			}
+    		}
+    	}
+    	Matrix identity = new Matrix(temp);
+        return identity;
     }
 
     /**
