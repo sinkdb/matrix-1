@@ -119,19 +119,21 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * Clones the matrix field
+     * @return clone of the matrix field
      */
+    @Override
     public java.lang.Object clone() {
-        return null;
+        return matrix.clone();
     }
 
     /**
+     * @scottshuffler
      *
      * @return
      */
     public double[][] getArray() {
-        return null;
+        return matrix;
     }
 
     /**
@@ -155,7 +157,13 @@ public class Matrix {
      * @return
      */
     public double[] getRowPackedCopy() {
-        return null;
+        double[] rowpacked = new double[getRowDimension() * getColumnDimension()];
+        for (int i = 0; i > matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                rowpacked[j] = matrix[i][j];
+            }
+        }
+        return rowpacked;
     }
 
     /**
@@ -196,7 +204,15 @@ public class Matrix {
      * @return
      */
     public Matrix getMatrix(int i0, int i1, int j0, int j1) {
-        return null;
+        double[][] submatrix = new double[i1-i0+1][j1-j0+1];
+        for(int i = i0; i <= i1; i++)
+        {
+            for(int j = j0; j <= j1; j++)
+            {
+                submatrix[i][j] = matrix[i][j];
+            }
+        }
+        return new Matrix(submatrix);
     }
 
     /**
@@ -227,12 +243,12 @@ public class Matrix {
      * @return a submatrix of the current matrix
      */
     public Matrix getMatrix(int i0, int i1, int[] c) {
-        double[][] submatrix = new double[i1-i0][c.length];
+        double[][] submatrix = new double[i1-i0+1][c.length];
         for(int i = i0; i <= i1; i++)
         {
         	for(int j = 0; j < c.length; j++)
         	{
-        		submatrix[i][j] = matrix[i0 + i][c[j]];
+        		submatrix[i][j] = matrix[i][c[j]];
         	}
         }
     	return new Matrix(submatrix);
@@ -240,13 +256,22 @@ public class Matrix {
 
     /**
      *
-     * @param r
-     * @param j0
-     * @param j1
-     * @return
+     * @param r - Array of indicies
+     * @param j0 - Initial column index
+     * @param j1 - Final column index
+     * @return New array
      */
     public Matrix getMatrix(int[] r, int j0, int j1) {
-        return null;
+
+        double[][] submatrix = new double[r.length][j1-j0+1];
+        for(int i = 0; i < r.length; i++)
+        {
+            for(int j = j0; j <= j1; j++)
+            {
+                submatrix[i][j] = matrix[r[i]][j];
+            }
+        }
+        return new Matrix(submatrix);
     }
 
     /**
@@ -271,31 +296,28 @@ public class Matrix {
      */
     //do this
     public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
-<<<<<<< HEAD
-    	for(int i = i0; i < i1; i++)
-    	{
-    		for(int j = j0; j < j1; j++)
-    		{
-    			matrix[i][j] = X[i][j];
-=======
     	for(int i = i0; i <= i1; i++)
     	{
     		for(int j = j0; j <= j1; j++)
     		{
     			matrix[i][j] = X.matrix[i][j];
->>>>>>> refs/remotes/CompassSoftware/master
     		}
     	}
     }
 
     /**
+     * scottshuffler
      *
-     * @param r
-     * @param c
-     * @param X
+     * @param r - One dimensional array
+     * @param c - One dimensional array
+     * @param X - Matrix variable
      */
     public void setMatrix(int[] r, int[] c, Matrix X) {
-
+        for (int i = 0; i < r.length; i++) {
+            for (int j = 0; j < c.length; j++) {
+                matrix[r[i]][c[j]] = X.matrix[r[i]][c[j]];
+            }
+        }
     }
 
     /**
@@ -321,11 +343,20 @@ public class Matrix {
     }
 
     /**
-     *
-     * @return
+     * Transposes the matrix
+     * @return - the new matrix
      */
     public Matrix transpose() {
-        return null;
+        // transpose in-place
+        Matrix ma = new Matrix(matrix);
+        for (int i = 0; i < ma.matrix.length; i++) {
+            for (int j = i+1; j < ma.matrix[i].length; j++) {
+                Double temp = ma.matrix[i][j];
+                ma.matrix[i][j] = ma.matrix[j][i];
+                ma.matrix[j][i] = temp;
+            }
+        }
+        return ma;
     }
 
     /**
@@ -385,12 +416,12 @@ public class Matrix {
      */
     //do this
     public Matrix plus(Matrix B) {
-    	Matrix newMatrix = new Matrix(B.length, B[0].length);
-        for (int i = 0; i < B.length; i++)
+    	Matrix newMatrix = new Matrix(B.matrix.length, B.matrix[0].length);
+        for (int i = 0; i < B.matrix.length; i++)
         {
-        	for(int j = 0; j < B[i].length; j++)
+        	for(int j = 0; j < B.matrix[i].length; j++)
         	{
-        		newMatrix[i][j] = (matrix[i][j] + B[i][j]);
+        		newMatrix.matrix[i][j] = (matrix[i][j] + B.matrix[i][j]);
         	}
         }
         return newMatrix;
@@ -421,14 +452,14 @@ public class Matrix {
      */
     //do this
     public Matrix minusEquals(Matrix B) {
-        for(int i = 0; i < B.length; i++)
+        for(int i = 0; i < B.matrix.length; i++)
         {
-        	for(int j = 0; j < B[i].length; j++)
+        	for(int j = 0; j < B.matrix[i].length; j++)
         	{
-        		matrix[i][j] -= B[i][j];
+        		matrix[i][j] -= B.matrix[i][j];
         	}
         }
-    	return matrix;
+    	return new Matrix(matrix);
     }
 
     /**
@@ -457,14 +488,14 @@ public class Matrix {
      */
     //do this
     public Matrix arrayTimesEquals(Matrix B) {
-    	for (int i = 0; i < B.length; i ++)
+    	for (int i = 0; i < B.matrix.length; i ++)
     	{
-    		for(int j = 0; j < B.[i].length; j++)
+    		for(int j = 0; j < B.matrix[i].length; j++)
     		{
-    			matrix[i][j] *= B[i][j];
+    			matrix[i][j] *= B.matrix[i][j];
     		}
     	}
-        return matrix;
+        return new Matrix(matrix);
     }
 
     /**
@@ -473,7 +504,15 @@ public class Matrix {
      * @return
      */
     public Matrix arrayRightDivide(Matrix B) {
-        return null;
+        double[][] newMatrix = new double[getRowDimension()][getColumnDimension()];
+        for(int i = 0; i < newMatrix.length; i++)
+        {
+            for(int j = 0; j < newMatrix[i].length; j++)
+            {
+                newMatrix[i][j] = matrix[i][j] / B.matrix[i][j];
+            }
+        }
+        return new Matrix(newMatrix);
     }
 
     /**
@@ -511,14 +550,14 @@ public class Matrix {
      */
     //do this
     public Matrix arrayLeftDivideEquals(Matrix B) {
-    	for (int i = 0; i < B.length; i++)
+    	for (int i = 0; i < B.matrix.length; i++)
     	{
-    		for(int j = 0; j < B.[i].length; j++)
+    		for(int j = 0; j < B.matrix[i].length; j++)
     		{
-    			matrix[i][j] \= B[i][j];
+    			matrix[i][j] /= B.matrix[i][j];
     		}
     	}
-        return matrix;
+        return new Matrix(matrix);
     }
 
     /**
@@ -548,16 +587,17 @@ public class Matrix {
     public Matrix times(Matrix B) {
     	//columns of first match rows of second
     	//matrix[0].length = B.length
-    	if(matrix[0].length == B.length)
+        Matrix newMatrix = null;
+    	if(matrix[0].length == B.matrix.length)
     	{
-    		Matrix newMatrix = new Matrix(matrix.length, B[0].length);
+            newMatrix = new Matrix(matrix.length, B.matrix[0].length);
     		for(int i = 0; i < matrix.length; i++)
     		{
-    			for(int j = 0; j < B[i].length; j++)
+    			for(int j = 0; j < B.matrix[i].length; j++)
     			{
-    				for(int k = 0; k < B.length; k++)
+    				for(int k = 0; k < B.matrix.length; k++)
     				{
-    					newMatrix[i][k] += matrix[i][k] * B[k][j];
+    					newMatrix.matrix[i][k] += matrix[i][k] * B.matrix[k][j];
     				}
     			}
     		}
@@ -571,7 +611,7 @@ public class Matrix {
      */
     //do this
     public double trace() {
-    	double diagonal;
+    	double diagonal = 0.0;
     	for(int i = 0; i < matrix.length; i++)
     	{
     		for(int j = 0; j < matrix[i].length; j++)
@@ -617,7 +657,7 @@ public class Matrix {
     	double[][] temp = new double[m][n];
     	for(int i = 0; i < temp.length; i ++)
     	{
-    		for(j = 0; j < temp[i].length; j++)
+    		for(int j = 0; j < temp[i].length; j++)
     		{
     			if(i == j)
     			{
@@ -697,6 +737,12 @@ public class Matrix {
      * @throws java.io.IOException
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
+        double[][] newMatrix;
+        String temp = input.readLine();
+        while(temp != null) {
+            
+        }
+
         return null;
     }
 }
