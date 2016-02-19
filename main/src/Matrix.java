@@ -759,12 +759,10 @@ public class Matrix {
     public void print(int w, int d) {
     	for(int i = 0; i < getRowDimension(); i++)
     	{
-    		System.out.print("[ ");
     		for(int j = 0; j < getColumnDimension(); j++)
     		{
     			System.out.print(String.format("%w.df ", matrix[i][j]));
     		}
-    		System.out.println("]");
     	}
     }
 
@@ -777,12 +775,10 @@ public class Matrix {
     public void print(java.io.PrintWriter output, int w, int d) {
     	for(int i = 0; i < getRowDimension(); i++)
     	{
-    		output.print("[ ");
     		for(int j = 0; j < getColumnDimension(); j++)
     		{
     			output.print(String.format("%w.df ", matrix[i][j]));
     		}
-    		output.println("]");
     	}
     }
 
@@ -792,7 +788,7 @@ public class Matrix {
      * @param width
      */
     public void print(java.text.NumberFormat format, int width) {
-
+        
     }
 
     /**
@@ -812,12 +808,29 @@ public class Matrix {
      * @throws java.io.IOException
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
-        double[][] newMatrix;
+
+        input.mark(0);
         String temp = input.readLine();
+        int colLen = temp.length() - temp.replaceAll(" ", "").length();
+        int rowLen = 0;
         while(temp != null) {
-            
+            rowLen++;
+            temp = input.readLine();
         }
 
+        double[][] newMatrix = new double[rowLen][colLen];
+        input.reset();
+        temp = input.readLine();
+        int i;
+        int j = 0;
+        while(temp != null) {
+            String[] arr = temp.split(" ");
+            for(i = 0; i < arr.length; i++) {
+                newMatrix[j][i] = Double.parseDouble(arr[i]);
+            }
+            temp = input.readLine();
+            j++;
+        }
         return null;
     }
 }
