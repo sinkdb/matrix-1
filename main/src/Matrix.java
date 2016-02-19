@@ -351,15 +351,15 @@ public class Matrix {
      */
     //do this
     public Matrix plus(Matrix B) {
-    	Matrix temp = new Matrix(B.length, B[0].length);
+    	Matrix newMatrix = new Matrix(B.length, B[0].length);
         for (int i = 0; i < B.length; i++)
         {
         	for(int j = 0; j < B[i].length; j++)
         	{
-        		temp[i][j] = (matrix[i][j] + B[i][j]);
+        		newMatrix[i][j] = (matrix[i][j] + B[i][j]);
         	}
         }
-        return temp;
+        return newMatrix;
     }
 
     /**
@@ -413,7 +413,14 @@ public class Matrix {
      */
     //do this
     public Matrix arrayTimesEquals(Matrix B) {
-        return null;
+    	for (int i = 0; i < B.length; i ++)
+    	{
+    		for(int j = 0; j < B.[i].length; j++)
+    		{
+    			matrix[i][j] *= B[i][j];
+    		}
+    	}
+        return matrix;
     }
 
     /**
@@ -450,7 +457,14 @@ public class Matrix {
      */
     //do this
     public Matrix arrayLeftDivideEquals(Matrix B) {
-        return null;
+    	for (int i = 0; i < B.length; i++)
+    	{
+    		for(int j = 0; j < B.[i].length; j++)
+    		{
+    			matrix[i][j] \= B[i][j];
+    		}
+    	}
+        return matrix;
     }
 
     /**
@@ -478,14 +492,23 @@ public class Matrix {
      */
     //do this
     public Matrix times(Matrix B) {
-        for(int i = 0; i < matrix.length; i++)
-        {
-        	for(int j = 0; j < matrix[i].length; j++)
-        	{
-        		matrix[i][j] *=
-        	}
-        }
-    	return null;
+    	//columns of first match rows of second
+    	//matrix[0].length = B.length
+    	if(matrix[0].length == B.length)
+    	{
+    		Matrix newMatrix = new Matrix(matrix.length, B[0].length);
+    		for(int i = 0; i < matrix.length; i++)
+    		{
+    			for(int j = 0; j < B[i].length; j++)
+    			{
+    				for(int k = 0; k < B.length; k++)
+    				{
+    					newMatrix[i][k] += matrix[i][k] * B[k][j];
+    				}
+    			}
+    		}
+    	}
+    	return newMatrix;
     }
 
     /**
@@ -537,12 +560,12 @@ public class Matrix {
     			}
     			else
     			{
-    				temp[i[j] = 0;
+    				temp[i][j] = 0;
     			}
     		}
     	}
     	Matrix identity = new Matrix(temp);
-        return i;
+        return identity;
     }
 
     /**
