@@ -197,7 +197,11 @@ public class Matrix {
      */
     //do this
     public int getColumnDimension() {
+<<<<<<< HEAD
         return matrix[0].length;
+=======
+        return matrix.length;
+>>>>>>> refs/remotes/origin/master
     }
 
     /**
@@ -774,7 +778,10 @@ public class Matrix {
      			}
     			System.out.print(String.format("%." + d + "f ", matrix[i][j]));
     		}
+<<<<<<< HEAD
     		System.out.print("\n");
+=======
+>>>>>>> refs/remotes/origin/master
     	}
     }
 
@@ -796,7 +803,10 @@ public class Matrix {
     			}
     			output.print(String.format("%." + d + "f ", matrix[i][j]));
     		}
+<<<<<<< HEAD
     		output.print("\n");
+=======
+>>>>>>> refs/remotes/origin/master
     	}
     	output.close();
     }
