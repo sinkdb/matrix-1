@@ -39,7 +39,9 @@ public class Testrix {
 	
 	@Test
 	public void testConstructor5() {
-		fail("Not yet implemented");
+		double[] arr = {1., 2., 3., 4., 5., 6., 7., 8.};
+        Matrix m = new Matrix(arr, 4);
+		assertArrayEquals("Not initialized correctly.", new double[][]{{1.,5.},{2.,6.},{3.,7.},{4.,8.}}, m.getArray());
 	}
 	
 	@Test
@@ -64,12 +66,14 @@ public class Testrix {
 	
 	@Test
 	public void testGetArrayCopy() {
-		fail("Not yet implemented");
+		assertArrayEquals("Copied array not equal.", initMatrix.getArray(), initMatrix.copy().getArray());
 	}
 	
 	@Test
 	public void testGetColumnPackedCopy() {
-		fail("Not yet implemented");
+		double[] actual = {1, 4, 7, 2, 5, 8, 3, 6, 9};
+        double[] compare = initMatrix.getColumnPackedCopy();
+        assertArrayEquals("Copied array not equal", actual, compare, 0);
 	}
 	
 	@Test
@@ -143,7 +147,9 @@ public class Testrix {
 	
 	@Test
 	public void testSetMatrix4() {
-		fail("Not yet implemented");
+		Matrix tempMatrix = new Matrix(3,3);
+        tempMatrix.setMatrix(new int[]{0,1,2}, new int[]{0,1,2}, initMatrix);
+        assertArrayEquals("Set Matrix failed", initMatrix.getArray(), tempMatrix.getArray());
 	}
 	
 	@Test
@@ -153,12 +159,14 @@ public class Testrix {
 	
 	@Test
 	public void testNorm1() {
-		fail("Not yet implemented");
+		double norm = initMatrix.norm1();
+        assertEquals("Norm1 failed.", 18, norm, 0);
 	}
 	
 	@Test
 	public void testNormInf() {
-		fail("Not yet implemented");
+		double norm = initMatrix.normInf();
+        assertEquals("Norm Inf failed", 24, norm, 0);
 	}
 	
 	@Test
@@ -187,12 +195,32 @@ public class Testrix {
 	
 	@Test
 	public void testPlusEquals() {
-		fail("Not yet implemented");
+        Matrix m = new Matrix(initMatrix.getArray());
+        Matrix p = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+        m = m.plusEquals(p);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), p.get(i, j) + initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
 	public void testMinus() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+        Matrix s = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+        m = m.minus(s);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), initMatrix.get(i, j) - s.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
@@ -290,12 +318,30 @@ public class Testrix {
 	
 	@Test
 	public void testTimes() {
-		fail("Not yet implemented");
+        Matrix m = new Matrix(initMatrix.getArray());
+        Matrix a = m.times(4);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        a.get(i, j), 4 * initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
 	public void testTimesEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+        m = m.timesEquals(4);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), 4 * initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
