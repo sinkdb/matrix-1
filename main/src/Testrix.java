@@ -88,7 +88,9 @@ public class Testrix {
 	
 	@Test
 	public void testGetColumnDimension() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = Matrix.random(3,3);
+		assertEquals(3.0, m.getColumnDimension(), 0.0);
 	}
 	
 	@Test
@@ -171,7 +173,10 @@ public class Testrix {
 	
 	@Test
 	public void testNormF() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = new Matrix(3, 3, 3.0);
+		double normf = m.normF();
+		assertEquals(9.0, normf, 0);
 	}
 	
 	@Test
@@ -190,7 +195,18 @@ public class Testrix {
 	
 	@Test
 	public void testPlus() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix s = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+		m = m.plus(s);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						m.get(i, j), initMatrix.get(i, j) + s.get(i, j), 0);
+			}
+		}
 	}
 	
 	@Test
@@ -225,7 +241,18 @@ public class Testrix {
 	
 	@Test
 	public void testMinusEquals() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix p = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+		m = m.minusEquals(p);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						m.get(i, j), initMatrix.get(i, j) - p.get(i, j), 0);
+			}
+		}
 	}
 	
 	@Test
@@ -346,12 +373,25 @@ public class Testrix {
 	
 	@Test
 	public void testTimes2() {
-		fail("Not yet implemented");
+
+		//Matrix m = new Matrix(new double[][]{{1,2,3},{4,5,6}});
+		Matrix m = new Matrix(2, 2, 3.0);
+		//Matrix s = new Matrix(new double[][]{{7,8},{9,10},{11,12}});
+		Matrix s = new Matrix(2, 2, 2.0);
+		m = m.times(s);
+
+		assertEquals(12, m.get(0,0), 0);
+		assertEquals(12, m.get(0,1), 0);
+		assertEquals(12, m.get(1,0), 0);
+		assertEquals(12, m.get(1,1), 0);
 	}
 	
 	@Test
 	public void testTrace() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = new Matrix(3, 3, 3.0);
+		double trace = m.trace();
+		assertEquals(9.0, trace, 0);
 	}
 	
 	@Test
@@ -370,7 +410,20 @@ public class Testrix {
 	
 	@Test
 	public void testIdentity() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		Matrix m = Matrix.identity(3,3);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				if(i == j)
+				{
+					assertEquals(1.0, 1.0, 0.0);
+				}
+				assertEquals(0.0, 0.0, 0.0);
+			}
+		}
+
 	}
 	
 	@Test
