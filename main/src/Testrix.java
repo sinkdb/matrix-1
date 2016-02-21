@@ -44,7 +44,7 @@ public class Testrix {
 	
 	@Test
 	public void testConstructWithCopy() {
-		fail("Not yet implemented");
+		assertArrayEquals("Construct with copy matrix not equal.", initMatrix.getArray() ,Matrix.constructWithCopy(initArray).getArray());
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class Testrix {
 	
 	@Test
 	public void testClone() {
-		fail("Not yet implemented");
+		assertArrayEquals("Cloned matrix not equal.", initMatrix.getArray() ,((Matrix) initMatrix.clone()).getArray());
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class Testrix {
 	
 	@Test
 	public void testGet() {
-		fail("Not yet implemented");
+		assertEquals("Get failed", 3, initMatrix.get(0,2), 0);
 	}
 	
 	@Test
@@ -216,17 +216,46 @@ public class Testrix {
 	
 	@Test
 	public void testArrayTimesEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.copy();
+		m.arrayTimesEquals(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						m.get(i, j), a.get(i, j) * initMatrix.get(i, j), 0);
+			}		
+		}
 	}
 	
 	@Test
 	public void testArrayRightDivide() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.arrayRightDivide(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						a.get(i, j), m.get(i, j) / initMatrix.get(i, j), 0);
+			}		
+		}
 	}
 	
 	@Test
 	public void testArrayRightDivideEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.copy();
+		a.arrayRightDivideEquals(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						a.get(i, j), m.get(i, j) / initMatrix.get(i, j), 0);
+			}		
+		}
 	}
 	
 	@Test
@@ -246,7 +275,17 @@ public class Testrix {
 	
 	@Test
 	public void testArrayLeftDivideEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.copy();
+		a.arrayLeftDivideEquals(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						m.get(i, j), initMatrix.get(i, j), 0 / a.get(i, j)) ;
+			}		
+		}
 	}
 	
 	@Test
