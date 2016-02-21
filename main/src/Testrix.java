@@ -54,7 +54,7 @@ public class Testrix {
 	
 	@Test
 	public void testClone() {
-		assertArrayEquals("Cloned matrix not equal.", initMatrix.getArray() ,((Matrix) initMatrix.clone()).getArray());
+		assertArrayEquals("Cloned matrix not equal.", initMatrix.getArray() ,(double[][]) initMatrix.clone());
 	}
 	
 	@Test
