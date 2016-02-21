@@ -803,27 +803,47 @@ public class Matrix {
 
     /**
      *
-     * @param format
-     * @param width
+     * @param format -
+     * @param width -
      */
     public void print(java.text.NumberFormat format, int width) {
-        
+        int rowDim = getRowDimension();
+        int colDim = getColumnDimension();
+        for (int i = 0; i < rowDim; i++) {
+            for (int j = 0; j < colDim; j++) {
+                for (int k = 0; k < width - format.getMaximumFractionDigits() - 1; k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(format.format(matrix[i][j]));
+            }
+            System.out.println();
+        }
     }
 
     /**
      *
-     * @param output
-     * @param format
-     * @param width
+     * @param output -
+     * @param format -
+     * @param width -
      */
     public void print(java.io.PrintWriter output, java.text.NumberFormat format, int width) {
-
+        int rowDim = getRowDimension();
+        int colDim = getColumnDimension();
+        for (int i = 0; i < rowDim; i++) {
+            for (int j = 0; j < colDim; j++) {
+                for (int k = 0; k < width - format.getMaximumFractionDigits() - 1; k++) {
+                    output.print(" ");
+                }
+                output.print(format.format(matrix[i][j]));
+            }
+            output.println();
+        }
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Reads in a matrix from a text file
+     * @param input - Input object
+     * @return - Matrix built
      * @throws java.io.IOException
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
