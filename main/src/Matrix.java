@@ -86,11 +86,18 @@ public class Matrix {
 
     }
 
+    /*
+     * @zachandrews
+     * Matrix constructor that takes in a column packed array and m rows and sets the fields of the matrix
+     * @param vals - column packed array
+     * @param m - number of rows
+     */
     public Matrix(double[] vals, int m) {
         matrix = new double[m][vals.length / m];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                matrix[j][i] = vals[j];
+        int counter = 0;
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                matrix[j][i] = vals[counter++];
             }
         }
     }
@@ -140,7 +147,7 @@ public class Matrix {
     /**
      * @zachandrews
      * Function that makes a copy of the internal 2-d array.
-     * @return new 2D array coppy of matrix elements
+     * @return new 2D array copy of matrix elements
      */
     public double[][] getArrayCopy() {
         double[][] internArray = new double[getRowDimension()][getColumnDimension()];
@@ -402,6 +409,7 @@ public class Matrix {
             if (sum >= max) {
                 max = sum;
             }
+            sum = 0;
         }
         return max;
     }
@@ -421,6 +429,7 @@ public class Matrix {
             if (sum >= max) {
                 max = sum;
             }
+            sum = 0.0;
         }
         return max;
     }
