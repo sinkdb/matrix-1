@@ -1,8 +1,12 @@
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 
@@ -11,11 +15,11 @@ public class Testrix {
 
 	private double[][] initArray = new double[][]{{1,2,3},{4,5,6},{7,8,9}};
 	private Matrix initMatrix = new Matrix(initArray);
-	@SuppressWarnings("deprecation")
+	
 	@Test
 	public void testConstructor() {
 		Matrix m = new Matrix(3,3);
-		assertEquals("Not initialized correctly.", new double[][]{{0,0,0},{0,0,0},{0,0,0}}, m.getArray());
+		assertArrayEquals("Not initialized correctly.", new double[][]{{0,0,0},{0,0,0},{0,0,0}}, m.getArray());
 	}
 
 	@Test
@@ -35,23 +39,24 @@ public class Testrix {
 	
 	@Test
 	public void testConstructor5() {
-		fail("Not yet implemented");
+		double[] arr = {1., 2., 3., 4., 5., 6., 7., 8.};
+        Matrix m = new Matrix(arr, 4);
+		assertArrayEquals("Not initialized correctly.", new double[][]{{1.,5.},{2.,6.},{3.,7.},{4.,8.}}, m.getArray());
 	}
 	
 	@Test
 	public void testConstructWithCopy() {
-		fail("Not yet implemented");
+		assertArrayEquals("Construct with copy matrix not equal.", initMatrix.getArray() ,Matrix.constructWithCopy(initArray).getArray());
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testCopy() {
-		assertEquals("Copied matrix not equal.", initMatrix.getArray() ,initMatrix.copy().getArray());
+		assertArrayEquals("Copied matrix not equal.", initMatrix.getArray() ,initMatrix.copy().getArray());
 	}
 	
 	@Test
 	public void testClone() {
-		fail("Not yet implemented");
+		assertArrayEquals("Cloned matrix not equal.", initMatrix.getArray() ,(double[][]) initMatrix.clone());
 	}
 	
 	@Test
@@ -61,12 +66,14 @@ public class Testrix {
 	
 	@Test
 	public void testGetArrayCopy() {
-		fail("Not yet implemented");
+		assertArrayEquals("Copied array not equal.", initMatrix.getArray(), initMatrix.copy().getArray());
 	}
 	
 	@Test
 	public void testGetColumnPackedCopy() {
-		fail("Not yet implemented");
+		double[] actual = {1, 4, 7, 2, 5, 8, 3, 6, 9};
+        double[] compare = initMatrix.getColumnPackedCopy();
+        assertArrayEquals("Copied array not equal", actual, compare, 0);
 	}
 	
 	@Test
@@ -86,7 +93,7 @@ public class Testrix {
 	
 	@Test
 	public void testGet() {
-		fail("Not yet implemented");
+		assertEquals("Get failed", 3, initMatrix.get(0,2), 0);
 	}
 	
 	@Test
@@ -96,16 +103,16 @@ public class Testrix {
 	
 	@Test
 	public void testGetMatrix2() {
-		assertEquals("Get matrix with two index arrays failed",
+		assertArrayEquals("Get matrix with two index arrays failed",
 				new double[][]{{1,3}, {4, 6}},
-				initMatrix.getMatrix(new int[]{0, 1}, new int[]{0, 2}));
+				initMatrix.getMatrix(new int[]{0, 1}, new int[]{0, 2}).getArrayCopy());
 	}
 	
 	@Test
 	public void testGetMatrix3() {
-		assertEquals("Get matrix with two index arrays failed",
+		assertArrayEquals("Get matrix with two index arrays failed",
 				new double[][]{{1,3}, {4, 6}},
-				initMatrix.getMatrix(0, 1, new int[]{0, 2}));
+				initMatrix.getMatrix(0, 1, new int[]{0, 2}).getArrayCopy());
 	}
 	
 	@Test
@@ -113,19 +120,17 @@ public class Testrix {
 		fail("Not yet implemented");
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testSet() {
 		initMatrix.set(0, 0, 6);
-		assertEquals("Set failed", 6, initMatrix.get(0,0));
+		assertEquals("Set failed", 6, initMatrix.get(0,0), 0);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testSetMatrix() {
 		Matrix tempMatrix = new Matrix(3,3);
 		tempMatrix.setMatrix(0, 2, 0, 2, initMatrix);
-		assertEquals("Set Matrix failed", initMatrix.getArray(), tempMatrix.getArray());
+		assertArrayEquals("Set Matrix failed", initMatrix.getArray(), tempMatrix.getArray());
 	}
 	
 	@Test
@@ -135,12 +140,16 @@ public class Testrix {
 	
 	@Test
 	public void testSetMatrix3() {
-		fail("Not yet implemented");
+		Matrix tempMatrix = new Matrix(3,3);
+		tempMatrix.setMatrix(new int[]{0,1,2}, 0, 2, initMatrix);
+		assertArrayEquals("Set Matrix failed", initMatrix.getArray(), tempMatrix.getArray());
 	}
 	
 	@Test
 	public void testSetMatrix4() {
-		fail("Not yet implemented");
+		Matrix tempMatrix = new Matrix(3,3);
+        tempMatrix.setMatrix(new int[]{0,1,2}, new int[]{0,1,2}, initMatrix);
+        assertArrayEquals("Set Matrix failed", initMatrix.getArray(), tempMatrix.getArray());
 	}
 	
 	@Test
@@ -150,12 +159,14 @@ public class Testrix {
 	
 	@Test
 	public void testNorm1() {
-		fail("Not yet implemented");
+		double norm = initMatrix.norm1();
+        assertEquals("Norm1 failed.", 18, norm, 0);
 	}
 	
 	@Test
 	public void testNormInf() {
-		fail("Not yet implemented");
+		double norm = initMatrix.normInf();
+        assertEquals("Norm Inf failed", 24, norm, 0);
 	}
 	
 	@Test
@@ -163,17 +174,16 @@ public class Testrix {
 		fail("Not yet implemented");
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testUminus() {
-		Matrix m = new Matrix(initMatrix.getArray());
-		m.uminus();
+		Matrix m = new Matrix(initMatrix.getArrayCopy());
+		m = m.uminus();
 		for(int i = 0; i < m.getRowDimension(); i++)
 		{
 			for(int j = 0; j < m.getColumnDimension(); j++)
 			{
 				assertEquals("Point " + i + " " + j + " not equal.",
-						-m.get(i, j), initMatrix.get(i, j));
+						-m.get(i, j), initMatrix.get(i, j), 0);
 			}		
 		}
 	}
@@ -185,12 +195,32 @@ public class Testrix {
 	
 	@Test
 	public void testPlusEquals() {
-		fail("Not yet implemented");
+        Matrix m = new Matrix(initMatrix.getArray());
+        Matrix p = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+        m = m.plusEquals(p);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), p.get(i, j) + initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
 	public void testMinus() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+        Matrix s = new Matrix(new double[][]{{10,11,12},{13,14,15},{16,17,18}});
+        m = m.minus(s);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), initMatrix.get(i, j) - s.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
@@ -198,65 +228,120 @@ public class Testrix {
 		fail("Not yet implemented");
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testArrayTimes() {
 		Matrix m = new Matrix(initMatrix.getArray());
-		m.arrayTimes(initMatrix);
+		Matrix a = m.arrayTimes(initMatrix);
 		for(int i = 0; i < m.getRowDimension(); i++)
 		{
 			for(int j = 0; j < m.getColumnDimension(); j++)
 			{
 				assertEquals("Point " + i + " " + j + " not equal.",
-						m.get(i, j), m.get(i, j) * initMatrix.get(i, j));
+						a.get(i, j), m.get(i, j) * initMatrix.get(i, j), 0);
 			}		
 		}
 	}
 	
 	@Test
 	public void testArrayTimesEquals() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testArrayRightDivide() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testArrayRightDivideEquals() {
-		fail("Not yet implemented");
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testArrayLeftDivide() {
 		Matrix m = new Matrix(initMatrix.getArray());
-		Matrix mCopy = m.copy();
-		m.arrayLeftDivide(initMatrix);
+		Matrix a = m.copy();
+		m.arrayTimesEquals(initMatrix);
 		for(int i = 0; i < m.getRowDimension(); i++)
 		{
 			for(int j = 0; j < m.getColumnDimension(); j++)
 			{
 				assertEquals("Point " + i + " " + j + " not equal.",
-						m.get(i, j), mCopy.get(i, j) / m.get(i, j));
+						m.get(i, j), a.get(i, j) * initMatrix.get(i, j), 0);
+			}		
+		}
+	}
+	
+	@Test
+	public void testArrayRightDivide() {
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.arrayRightDivide(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						a.get(i, j), m.get(i, j) / initMatrix.get(i, j), 0);
+			}		
+		}
+	}
+	
+	@Test
+	public void testArrayRightDivideEquals() {
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.copy();
+		a.arrayRightDivideEquals(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						a.get(i, j), m.get(i, j) / initMatrix.get(i, j), 0);
+			}		
+		}
+	}
+	
+	@Test
+	public void testArrayLeftDivide() {
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix mCopy = m.copy();
+		Matrix a = m.arrayLeftDivide(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						a.get(i, j), mCopy.get(i, j) / m.get(i, j), 0);
 			}		
 		}
 	}
 	
 	@Test
 	public void testArrayLeftDivideEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+		Matrix a = m.copy();
+		a.arrayLeftDivideEquals(initMatrix);
+		for(int i = 0; i < m.getRowDimension(); i++)
+		{
+			for(int j = 0; j < m.getColumnDimension(); j++)
+			{
+				assertEquals("Point " + i + " " + j + " not equal.",
+						m.get(i, j), initMatrix.get(i, j), 0 / a.get(i, j)) ;
+			}		
+		}
 	}
 	
 	@Test
 	public void testTimes() {
-		fail("Not yet implemented");
+        Matrix m = new Matrix(initMatrix.getArray());
+        Matrix a = m.times(4);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        a.get(i, j), 4 * initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
 	public void testTimesEquals() {
-		fail("Not yet implemented");
+		Matrix m = new Matrix(initMatrix.getArray());
+        m = m.timesEquals(4);
+        for(int i = 0; i < m.getRowDimension(); i++)
+        {
+            for(int j = 0; j < m.getColumnDimension(); j++)
+            {
+                assertEquals("Point " + i + " " + j + " not equal.",
+                        m.get(i, j), 4 * initMatrix.get(i, j), 0);
+            }
+        }
 	}
 	
 	@Test
@@ -277,7 +362,7 @@ public class Testrix {
 			for(int j = 0; j < m.getColumnDimension(); j++)
 			{
 				assertTrue("Point " + i + " " + j + " not equal.",
-							0 >= m.get(i,j) || m.get(i, j) >= 1);
+							0 <= m.get(i,j) && m.get(i, j) <= 1);
 				
 			}		
 		}
@@ -292,20 +377,19 @@ public class Testrix {
 	public void testPrint() {
 		 ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	     System.setOut(new PrintStream(outContent));
-	     initMatrix.print(2, 2);
-	     String output  = "[1.0, 2.0, 3.0]\n[4.0, 5.0, 6.0]\n[7.0, 8.0, 9.0]\n";
+	     initMatrix.print(3, 1);
+	     String output  = " 1.0  2.0  3.0 \n 4.0  5.0  6.0 \n 7.0  8.0  9.0 \n";
 
-	     assertEquals(outContent.toString(), output);
+	     assertEquals(output, outContent.toString());
 	}
 	
 	@Test
-	public void testPrint2() {
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	     System.setOut(new PrintStream(outContent));
-	     initMatrix.print(new PrintWriter(outContent), 2, 2);
-	     String output  = "[1.0, 2.0, 3.0]\n[4.0, 5.0, 6.0]\n[7.0, 8.0, 9.0]\n";
-
-	     assertEquals(outContent.toString(), output);
+	public void testPrint2() throws IOException {
+	    StringWriter a = new StringWriter();
+	    PrintWriter b = new PrintWriter("test.txt", "UTF-8");
+	    initMatrix.print(b, 2, 1);
+	    a.write("1.0 2.0 3.0 \n4.0 5.0 6.0 \n7.0 8.0 9.0 \n");
+	    assertEquals(a.toString(), new String(Files.readAllBytes(Paths.get("test.txt"))));
 	}
 	
 	@Test

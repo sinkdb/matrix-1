@@ -86,11 +86,18 @@ public class Matrix {
 
     }
 
+    /*
+     * @zachandrews
+     * Matrix constructor that takes in a column packed array and m rows and sets the fields of the matrix
+     * @param vals - column packed array
+     * @param m - number of rows
+     */
     public Matrix(double[] vals, int m) {
         matrix = new double[m][vals.length / m];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                matrix[j][i] = vals[j];
+        int counter = 0;
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                matrix[j][i] = vals[counter++];
             }
         }
     }
@@ -140,7 +147,7 @@ public class Matrix {
     /**
      * @zachandrews
      * Function that makes a copy of the internal 2-d array.
-     * @return new 2D array coppy of matrix elements
+     * @return new 2D array copy of matrix elements
      */
     public double[][] getArrayCopy() {
         double[][] internArray = new double[getRowDimension()][getColumnDimension()];
@@ -197,7 +204,7 @@ public class Matrix {
      */
     //do this
     public int getColumnDimension() {
-        return matrix.length;
+        return matrix[0].length;
     }
 
     /**
@@ -337,14 +344,21 @@ public class Matrix {
     }
 
     /**
-     *
-     * @param r
-     * @param j0
-     * @param j1
-     * @param X
+     * @chrissmith
+     * Function that sets a portion of the matrix
+     * @param r array of row indices
+     * @param j0 first column index
+     * @param j1 last column index
+     * @param X Matrix to use for setting current matrix
      */
     public void setMatrix(int[] r, int j0, int j1, Matrix X) {
-
+    	for(int i = 0; i < r.length; i++)
+    	{
+    		for(int j = j0; j <= j1; j++)
+    		{
+    			matrix[r[i]][j] = X.matrix[r[i]][j];
+    		}
+       	}
     }
 
     /**
@@ -395,6 +409,7 @@ public class Matrix {
             if (sum >= max) {
                 max = sum;
             }
+            sum = 0;
         }
         return max;
     }
@@ -414,6 +429,7 @@ public class Matrix {
             if (sum >= max) {
                 max = sum;
             }
+            sum = 0.0;
         }
         return max;
     }
@@ -751,9 +767,9 @@ public class Matrix {
     /**
      * @chrissmith
      * Function that prints out each item in the form x.y,
-     * where w is the max number of digits in x and
+     * where w is the column width and
      * d is the max number of digits in y.
-     * @param w number of sig. digits before the decimal place
+     * @param w column width
      * @param d number of sig. digits after the decimal place
      */
     public void print(int w, int d) {
@@ -761,50 +777,82 @@ public class Matrix {
     	{
     		for(int j = 0; j < getColumnDimension(); j++)
     		{
-    			System.out.print(String.format("%w.df ", matrix[i][j]));
+    			for(int k = 0; k < w - d - 1; k++)
+     			{
+    				System.out.print(" ");
+     			}
+    			System.out.print(String.format("%." + d + "f ", matrix[i][j]));
     		}
+    		System.out.print("\n");
     	}
     }
 
     /**
-     *
-     * @param output
-     * @param w
-     * @param d
+     * @chrissmith
+     * Function that prints the matrix to the output.
+     * @param output PrintWriter object to print to
+     * @param w column width
+     * @param d number of digits after the decimal
      */
     public void print(java.io.PrintWriter output, int w, int d) {
     	for(int i = 0; i < getRowDimension(); i++)
     	{
     		for(int j = 0; j < getColumnDimension(); j++)
     		{
-    			output.print(String.format("%w.df ", matrix[i][j]));
+    			for(int k = 0; k < w - d - 1; k++)
+    			{
+    				output.print(" ");
+    			}
+    			output.print(String.format("%." + d + "f ", matrix[i][j]));
     		}
+    		output.print("\n");
     	}
+    	output.close();
     }
 
     /**
      *
-     * @param format
-     * @param width
+     * @param format -
+     * @param width -
      */
     public void print(java.text.NumberFormat format, int width) {
-        
+        int rowDim = getRowDimension();
+        int colDim = getColumnDimension();
+        for (int i = 0; i < rowDim; i++) {
+            for (int j = 0; j < colDim; j++) {
+                for (int k = 0; k < width - format.getMaximumFractionDigits() - 1; k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(format.format(matrix[i][j]));
+            }
+            System.out.println();
+        }
     }
 
     /**
      *
-     * @param output
-     * @param format
-     * @param width
+     * @param output -
+     * @param format -
+     * @param width -
      */
     public void print(java.io.PrintWriter output, java.text.NumberFormat format, int width) {
-
+        int rowDim = getRowDimension();
+        int colDim = getColumnDimension();
+        for (int i = 0; i < rowDim; i++) {
+            for (int j = 0; j < colDim; j++) {
+                for (int k = 0; k < width - format.getMaximumFractionDigits() - 1; k++) {
+                    output.print(" ");
+                }
+                output.print(format.format(matrix[i][j]));
+            }
+            output.println();
+        }
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Reads in a matrix from a text file
+     * @param input - Input object
+     * @return - Matrix built
      * @throws java.io.IOException
      */
     public static Matrix read(java.io.BufferedReader input) throws java.io.IOException {
